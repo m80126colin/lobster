@@ -1,19 +1,7 @@
 <template>
 <div id="app" class="ui centered grid">
-  <div id="content" class="twelve wide column">
-    <div v-if="init" class="ui segment">
-      <div class="ui grid">
-        <div class="eight wide column">
-          <img class="ui image" :src="`./static/${problems[current][0]}`">
-        </div>
-        <div class="eight wide column">
-          <div class="ui radio checkbox" v-for="s in problems[current][1]">
-            <input type="radio" :name="current" :value="s">
-            <label>{{ s }}</label>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="twelve wide column">
+    <router-view :store="store"></router-view>
   </div>
 </div>
 </template>
@@ -25,8 +13,6 @@ import $ from 'jquery'
 window._ = _
 window.$ = window.jQuery = $
 
-const data = require('./assets/asset.csv')
-
 require('semantic-ui-css/semantic.css')
 require('semantic-ui-css/semantic.js')
 
@@ -34,21 +20,44 @@ export default {
   name: 'app',
   data() {
     return {
-      init: false,
-      current: 0,
-      problems: []
+      store: {
+        token:    '',
+        check:    [],
+        options:  [],
+        problems: [],
+        result:   []
+      }
     }
   },
   created() {
-    let app = this
-    const select = ['貓', '獵豹', '金魚']
-    app.problems = _.map(data, (prob) => {
-      return [
-        prob[0],
-        _(select).concat(prob[1]).shuffle().value()
-      ]
+    const app = this
+    // events
+    app.$root
+    .$on('write_check',   app.writeCheck)
+    .$on('upload_answer', app.uploadAnswer)
+    //
+    $.getJSON('/problem').done(data => {
+      _.assign(app.store, data, {
+        check: _.map(data.problems, prob => { return {} })
+      })
     })
-    app.init = true
+  },
+  methods: {
+    writeCheck(idx, data) {
+      const app = this
+      _.assign(app.store.check[idx], data)
+    },
+    uploadAnswer() {
+      const app = this
+      $.getJSON('/answer', {
+        token: app.store.token,
+        check: app.store.check
+      }).done(data => {
+        _.assign(app.store, {
+          result: data
+        })
+      })
+    }
   }
 }
 </script>

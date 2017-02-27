@@ -6,16 +6,21 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "update": "npm run build & npm run start",
+    "start": "node lobster.js"
   },
   "dependencies": {
     "csv": "^1.1.1",
     "express": "^4.14.1",
     "jquery": "^3.1.1",
+    "jsonwebtoken": "^7.3.0",
     "lodash": "^4.17.4",
+    "moment": "^2.17.1",
     "opn": "^4.0.2",
     "semantic-ui-css": "^2.2.4",
     "vue": "^2.1.10",
+    "vue-router": "^2.3.0",
     "yamljs": "^0.2.8"
   },
   "devDependencies": {
@@ -52,7 +57,7 @@
     "webpack-merge": "^2.6.1"
   },
   "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
+    "node": ">= 6.10.0",
+    "npm": ">= 3.10.0"
   }
 }
