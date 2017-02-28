@@ -10,9 +10,14 @@
 import _ from 'lodash'
 import $ from 'jquery'
 
-window._ = _
-window.$ = window.jQuery = $
+/**
+ *  Setup jQuery
+ */
+window.jQuery = window.$ = $
 
+/**
+ *  semantic UI theme
+ */
 require('semantic-ui-css/semantic.css')
 require('semantic-ui-css/semantic.js')
 
@@ -31,11 +36,15 @@ export default {
   },
   created() {
     const app = this
-    // events
+    /**
+     *  Setup events
+     */
     app.$root
     .$on('write_check',   app.writeCheck)
     .$on('upload_answer', app.uploadAnswer)
-    //
+    /**
+     *  Initialize problem data
+     */
     $.getJSON('/problem').done(data => {
       _.assign(app.store, data, {
         check: _.map(data.problems, prob => { return {} })
@@ -43,19 +52,24 @@ export default {
     })
   },
   methods: {
+    /**
+     *  Modify a specified position of store.check
+     *  @param {number} idx
+     *  @param {json}   data
+     */
     writeCheck(idx, data) {
       const app = this
       _.assign(app.store.check[idx], data)
     },
+    /**
+     *  Upload store.token and store.check to retrieve store.result
+     */
     uploadAnswer() {
       const app = this
-      $.getJSON('/answer', {
-        token: app.store.token,
-        check: app.store.check
-      }).done(data => {
-        _.assign(app.store, {
-          result: data
-        })
+      $.getJSON('/answer',
+        _.pick(app.store, 'token', 'check'))
+      .done(data => {
+        _.assign(app.store, { result: data })
       })
     }
   }
