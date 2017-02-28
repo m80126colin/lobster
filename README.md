@@ -1,19 +1,40 @@
 # lobster
 
-> A Vue.js project
+A multiple choice question system by Vue.js and Express.js
 
-## Installation
+## Building and Launching
+
+### Installation
 
 ``` bash
+git clone git@github.com:m80126colin/lobster.git
+cd lobster/
 npm install
 ```
 
-## Run
+### Update Data
 
 ``` bash
-node lobster.js
+npm run update
 ```
 
-# License
+### Run
+
+``` bash
+npm run start
+```
+
+## Configuration
+
+1. Add image into `static/` folder
+2. Set your problem configure at `problem.yml`
+  a. `source` - image filename
+  b. `answer` - answer corresponding to the image
+
+## Special Thanks
+
+Sample images in `static/` are in CC0.
+
+## License
 
 MIT
