@@ -28,8 +28,9 @@ npm run start
 
 1. Add image into `static/` folder
 2. Set your problem configure at `problem.yml`
-  a. `source` - image filename
-  b. `answer` - answer corresponding to the image
+  1. `source` - image filename
+  2. `answer` - answer corresponding to the image
+3. Run `npm run update` to update dat and run program
 
 ## Special Thanks
 
