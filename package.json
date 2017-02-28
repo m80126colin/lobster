@@ -1,7 +1,7 @@
 {
   "name": "lobster",
-  "version": "1.0.0",
-  "description": "A Vue.js project",
+  "version": "0.0.1",
+  "description": "A multiple choice question system by Vue.js and Express.js",
   "author": "Hsu Karinsu <m80126colin@gmail.com>",
   "private": true,
   "scripts": {
@@ -11,7 +11,6 @@
     "start": "node lobster.js"
   },
   "dependencies": {
-    "csv": "^1.1.1",
     "express": "^4.14.1",
     "jquery": "^3.1.1",
     "jsonwebtoken": "^7.3.0",

@@ -9,6 +9,9 @@ export default {
   name: 'index',
   props: [ 'store' ],
   methods: {
+    /**
+     *  Check whether store.problems is loaded
+     */
     isAvailable() {
       if (this.store.problems.length)
         return ''

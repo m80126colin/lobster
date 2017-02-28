@@ -43,8 +43,10 @@
 import _ from 'lodash'
 import moment from 'moment'
 
-window.moment = moment
-
+/**
+ *  Return specified format of time
+ *  @return {string}
+ */
 const myDate = () => moment(new Date()).format('hh:mm:ss.SSS')
 
 export default {
@@ -55,27 +57,45 @@ export default {
       select: -1
     }
   },
+  /**
+   *  Update data when mounted
+   */
   mounted() {
     this.updateData()
   },
   watch: {
+    /**
+     *  Track dynamic routes and refresh data
+     */
     '$route' (to, from) {
       this.updateData()
     }
   },
   computed: {
+    /**
+     *  Public Id
+     */
     showId() {
       return parseInt(this.$route.params.id)
     },
+    /**
+     *  Index for store.problems and store.check
+     */
     idx() {
       return this.showId - 1
     },
+    /**
+     *  Problem information for current index
+     */
     prob() {
       const app = this
       return app.store.problems[app.idx]
     }
   },
   methods: {
+    /**
+     *  Refresh data
+     */
     updateData() {
       const app = this
       _.assign(app.$data, {
@@ -84,7 +104,10 @@ export default {
         end:    ''
       })
     },
-    updateSelect(e) {
+    /**
+     *  Emit 'write_check' event
+     */
+    updateSelect() {
       const app = this
       _.assign(app.$data, { end: myDate() })
       app.$root.$emit('write_check', app.idx, app.$data)

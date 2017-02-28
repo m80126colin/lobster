@@ -13,3 +13,7 @@ npm install
 ``` bash
 node lobster.js
 ```
+
+# License
+
+MIT

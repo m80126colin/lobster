@@ -40,6 +40,9 @@ export default {
   data() {
     return {}
   },
+  /**
+   *  Emit 'upload_answer' event
+   */
   created() {
     this.$root.$emit('upload_answer')
   }
