@@ -1,19 +1,19 @@
 <template>
 <div id="prob" class="ui segment">
 <div class="ui grid">
-  <div class="eight wide column">
-    <img class="ui image" :src="`./static/${prob.source}`">
+  <div class="twelve wide column">
+    <img class="ui fluid rounded image" :src="`./static/${prob.source}`">
   </div>
-  <div class="eight wide column segments">
+  <div class="four wide column segments">
     <div class="ui right aligned basic segment">
       <div class="ui statistic">
         <div class="value">{{ `${showId}/${store.problems.length}` }}</div>
       </div>
     </div>
-    <div class="ui form basic segment">
+    <div class="ui massive form basic segment">
       <div class="grouped fields">
         <div class="field" v-for="s in prob.selections">
-        <div class="ui radio checkbox">
+        <div class="ui large radio checkbox">
           <input type="radio"
             :name="idx"
             :value="s"
@@ -40,14 +40,17 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import _      from 'lodash'
 import moment from 'moment'
 
+const format = 'HH:mm:ss.SSS'
 /**
  *  Return specified format of time
  *  @return {string}
  */
-const myDate = () => moment(new Date()).format('hh:mm:ss.SSS')
+const myDate = () => moment(new Date()).format(format)
+
+window.moment = moment
 
 export default {
   name: 'prob',
@@ -108,8 +111,15 @@ export default {
      *  Emit 'write_check' event
      */
     updateSelect() {
-      const app = this
-      _.assign(app.$data, { end: myDate() })
+      const app     = this
+      const current = myDate()
+      let diff = moment(current, format) - moment(app.$data.start, format)
+      window.console.log(diff)
+      if (diff < 0) diff += moment.duration(1, 'days')
+      _.assign(app.$data, {
+        end:  current,
+        diff: moment.duration(diff).asSeconds()
+      })
       app.$root.$emit('write_check', app.idx, app.$data)
     }
   }

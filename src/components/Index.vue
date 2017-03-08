@@ -8,14 +8,26 @@
 export default {
   name: 'index',
   props: [ 'store' ],
+  data() {
+    return {
+      loading: 1
+    }
+  },
+  created() {
+    const app = this
+    window.console.log('XD!')
+    app.$root.$emit('get_problem', () => {
+      app.loading = 0
+    })
+  },
   methods: {
     /**
      *  Check whether store.problems is loaded
      */
     isAvailable() {
-      if (this.store.problems.length)
-        return ''
-      return 'loading'
+      if (this.loading)
+        return 'loading'
+      return ''
     }
   }
 }
