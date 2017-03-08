@@ -10,12 +10,7 @@ A multiple choice question system by Vue.js and Express.js
 git clone git@github.com:m80126colin/lobster.git
 cd lobster/
 npm install
-```
-
-### Update Data
-
-``` bash
-npm run update
+npm run build
 ```
 
 ### Run

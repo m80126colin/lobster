@@ -42,14 +42,10 @@ export default {
     app.$root
     .$on('write_check',   app.writeCheck)
     .$on('upload_answer', app.uploadAnswer)
+    .$on('get_problem',   app.getProblem)
     /**
      *  Initialize problem data
      */
-    $.getJSON('/problem').done(data => {
-      _.assign(app.store, data, {
-        check: _.map(data.problems, prob => { return {} })
-      })
-    })
   },
   methods: {
     /**
@@ -70,6 +66,18 @@ export default {
         _.pick(app.store, 'token', 'check'))
       .done(data => {
         _.assign(app.store, { result: data })
+      })
+    },
+    /**
+     *  Initialize problem data
+     */
+    getProblem(cb) {
+      const app = this
+      $.getJSON('/problem').done(data => {
+        _.assign(app.store, data, {
+          check: _.map(data.problems, prob => { return {} })
+        })
+        cb()
       })
     }
   }
