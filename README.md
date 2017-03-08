@@ -21,11 +21,7 @@ npm run start
 
 ## Configuration
 
-1. Add image into `static/` folder
-2. Set your problem configure at `problem.yml`
-  1. `source` - image filename
-  2. `answer` - answer corresponding to the image
-3. Run `npm run update` to update dat and run program
+We can setup problems in `localhost:5566/admin`.
 
 ## Special Thanks
 
