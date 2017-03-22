@@ -1,3 +1,12 @@
+options:
+- "獅子"
+- "螃蟹"
+- "大象"
+- "長頸鹿"
+- "龍蝦"
+- "蝦子"
+- "斑馬"
+problems:
 - source: "african-lion-951778_640.jpg"
   answer: "獅子"
 - source: "crab-63084_640.jpg"

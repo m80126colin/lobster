@@ -21,7 +21,7 @@ const secret     = '<secret>'
 /**
  *  Problem operations
  */
-const readProblems = () => {
+const readRaw = () => {
   return yaml.load(`${__dirname}/problem.yml`)
 }
 
@@ -31,34 +31,27 @@ const readProblems = () => {
  */
 const route_problem = (req, res) => {
   // read problem config
-  const problems = readProblems()
+  const raw = readRaw()
   // collection of options
-  const options  = _(problems)
-    .map(prob => prob.answer)
+  const options = _(raw.options)
     .sortBy(ans => ans)
     .sortedUniq()
     .value()
   // make index of options
-  const optidx   = _.reduce(options, (dict, val, key) => {
+  const optidx = _.reduce(options, (dict, val, key) => {
     dict[val] = key
     return dict
   }, {})
   // index of options
-  const selector = _.range(options.length - 1)
+  const selector = _.range(options.length)
   // make problems and its selections
-  const probset  = _(problems)
+  const probset = _(raw.problems)
     .map(prob => {
       const ans = optidx[ prob.answer ]
       return [
         {
           source: prob.source,
-          selections: _(selector)
-            .shuffle()
-            .take(3)
-            .map(num => (num >= ans) ? num + 1 : num)
-            .concat(ans)
-            .shuffle()
-            .value()
+          selections: selector
         },
         ans
       ]
@@ -107,8 +100,8 @@ const route_answer = (req, res) => {
  *  @route {GET} /list
  */
 const route_get_list = (req, res) => {
-  const problems = readProblems()
-  res.json(problems).end()
+  const raw = readRaw()
+  res.json(raw).end()
 }
 
 /**
@@ -130,10 +123,13 @@ const route_post_table = (req, res) => {
   const data   = req.body
   const fields = _.keys(_.head(data))
   console.log(fields)
+  // data to csv
   json2csv({ data: data, fields: fields }, (err, csv) => {
+    // use timestamp as file name
     const filename = `${moment(new Date()).format('x')}.csv`
-    console.log(`filename: ${filename}`)
+    // write file
     const fp = path.join(__dirname, 'dist', 'static', filename)
+    // return link
     fs.writeFile(fp, csv, 'utf-8', err2 => {
       res.json({
         link: `/static/${filename}`
