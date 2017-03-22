@@ -15,7 +15,6 @@ export default {
   },
   created() {
     const app = this
-    window.console.log('XD!')
     app.$root.$emit('get_problem', () => {
       app.loading = 0
     })

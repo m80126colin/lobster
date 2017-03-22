@@ -35,11 +35,13 @@ import $    from 'jquery'
 import util from '../scripts/util'
 
 const fields = [
-  { name: '選擇',          attr: 'select' },
-  { name: '答案',          attr: 'answer' },
-  { name: '開始時間',      attr: 'start'  },
-  { name: '結束時間',      attr: 'end'    },
-  { name: '時間間隔 (秒)', attr: 'diff'   }
+  { name: '選擇',            attr: 'select'     },
+  { name: '答案',            attr: 'answer'     },
+  { name: '開始時間',        attr: 'start'      },
+  { name: '作答時間',        attr: 'middle'     },
+  { name: '結束時間',        attr: 'end'        },
+  { name: '作答間隔 (秒)',   attr: 'diffMiddle' },
+  { name: '難易度間隔 (秒)', attr: 'diffEnd'    }
 ]
 
 export default {
