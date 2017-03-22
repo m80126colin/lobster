@@ -43,7 +43,7 @@ const route_problem = (req, res) => {
     return dict
   }, {})
   // index of options
-  const selector = _.range(options.length - 1)
+  const selector = _.range(options.length)
   // make problems and its selections
   const probset = _(raw.problems)
     .map(prob => {

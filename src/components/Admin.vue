@@ -1,20 +1,63 @@
 <template>
-<div id="admin" class="ui basic center aligned segment">
+<div id="admin" class="ui center aligned basic segment">
+<div class="ui basic segment">
+  <div class="ui secondary menu">
+    <a class="item" @click.prevent="state = 'options'">修改選項</a>
+    <a class="item" @click.prevent="state = 'problems'">修改題目</a>
+    <router-link to="/" class="item">回首頁</router-link>
+  </div>
+</div>
+<div class="ui basic segment" v-show="state === 'options'">
+  <div class="ui form">
+    <div class="inline fields">
+    <div class="field">
+      <label for="option">選項</label>
+      <input id="option" type="text" name="option" />
+    </div>
+    <div class="field">
+      <button class="ui green button"
+        @click.prevent="addOption">新增選項</button>
+    </div>
+    </div>
+  </div>
+  <table class="ui definition celled table">
+    <thead><tr>
+      <th></th>
+      <th>選項</th>
+      <th>操作</th>
+    </tr></thead>
+    <tbody>
+      <tr v-for="(o, idx) in store.options" :key="`opt${idx}`">
+        <td>{{ idx + 1 }}</td>
+        <td>{{ o }}</td>
+        <td>
+          <button class="ui basic red button"
+            @click="deleteOption"
+            :data-id="idx">刪除</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="ui basic segment" v-show="state === 'problems'">
   <form id="form" class="ui form" method="post" enctype="multipart/form-data">
-    <div class="inline field">
+  <div class="inline fields">
+    <div class="field">
       <label for="source">圖片檔案</label>
       <input type="file" name="source" />
     </div>
-    <div class="inline field">
+    <div class="field">
       <label for="answer">答案</label>
-      <input type="text" name="answer" />
+      <select name="answer" class="ui search dropdown">
+        <option v-for="o in store.options" :value="o">{{ o }}</option>
+      </select>
     </div>
     <div class="field">
       <button class="ui green button"
         @click.prevent="addProblem">新增題目</button>
     </div>
+  </div>
   </form>
-  <router-link to="/" class="ui blue button">回首頁</router-link>
   <table class="ui definition celled table">
     <thead><tr>
       <th></th>
@@ -23,7 +66,7 @@
       <th>操作</th>
     </tr></thead>
     <tbody>
-      <tr v-for="(row, idx) in store" :key="idx">
+      <tr v-for="(row, idx) in store.problems" :key="`prob${idx}`">
         <td>{{ idx + 1 }}</td>
         <td>
         <a :href="`/static/${row.source}`" target="_blank" class="ui rounded image">
@@ -39,7 +82,10 @@
       </tr>
     </tbody>
   </table>
+</div>
+<div class="ui basic segment">
   <router-link to="/" class="ui blue button">回首頁</router-link>
+</div>
 </div>
 </template>
 
@@ -56,8 +102,12 @@ export default {
   name: 'admin',
   data() {
     return {
-      store:  [],
-      fields: fields
+      store: {
+        options:  [],
+        problems: []
+      },
+      fields: fields,
+      state: 'options'
     }
   },
   created() {
@@ -67,19 +117,32 @@ export default {
     })
   },
   watch: {
-    store(newStore) {
-      window.console.log(newStore)
-      util.$postJSON('/list', newStore)
+    store: {
+      handler(newStore) {
+        window.console.log(newStore)
+        util.$postJSON('/list', newStore)
+      },
+      deep: true
     }
   },
   methods: {
+    deleteOption(e) {
+      const options = this.store.options
+      const idx     = $(e.target).attr('data-id')
+      options.splice(idx, 1)
+    },
+    addOption(e) {
+      const options = this.store.options
+      const option  = $('#option').val()
+      options.push(option)
+    },
     deleteProblem(e) {
-      const app = this
-      const idx = $(e.target).attr('data-id')
-      app.store.splice(idx, 1)
+      const problems = this.store.problems
+      const idx      = $(e.target).attr('data-id')
+      problems.splice(idx, 1)
     },
     addProblem(e) {
-      const app      = this
+      const problems = this.store.problems
       const formData = new FormData( $('#form')[0] )
 
       $.ajax({
@@ -91,7 +154,7 @@ export default {
       })
       .done(data => {
         window.console.log(data)
-        app.store.push(data)
+        problems.push(data)
       })
     }
   }
