@@ -1,15 +1,15 @@
 <template>
 <div id="prob">
   <div class="ui right aligned basic segment">
+    <span class="ui basic segment" v-if="page === 0">
+      <button class="ui massive red button" @click="addPage">作答</button>
+    </span>
     <div class="ui statistic">
       <div class="value">{{ `${showId}/${store.problems.length}` }}</div>
     </div>
   </div>
   <div class="ui segment" v-if="page === 0">
     <img class="ui fluid rounded image" :src="`./static/${prob.source}`">
-    <div class="ui right aligned basic segment">
-      <button class="ui blue basic button" @click="addPage">作答</button>
-    </div>
   </div>
   <div class="ui segment" v-else-if="page === 1">
     <h1 class="ui header">作答</h1>
@@ -26,7 +26,7 @@
       </div>
     </div>
     <div v-show="pack.select >= 0" class="ui right aligned basic segment">
-      <button class="ui blue basic button" @click="addPage">難易度</button>
+      <button class="ui massive red button" @click="addPage">難易度</button>
     </div>
   </div>
   <div class="ui segment" v-else>
@@ -52,11 +52,11 @@
       <router-link
         v-if="showId < store.problems.length"
         :to="`/prob/${showId + 1}`"
-        class="ui basic green button">下一題</router-link>
+        class="ui massive green button">下一題</router-link>
       <router-link
         v-else
         to="/end"
-        class="ui basic orange button">結束</router-link>
+        class="ui massive orange button">結束</router-link>
     </div>
   </div>
 </div>
