@@ -12,7 +12,7 @@
     <div class="inline fields">
     <div class="field">
       <label for="option">選項</label>
-      <input id="option" type="text" name="option" />
+      <input type="text" name="option" v-model="option" />
     </div>
     <div class="field">
       <button class="ui green button"
@@ -106,6 +106,7 @@ export default {
         options:  [],
         problems: []
       },
+      option: '',
       fields: fields,
       state: 'options'
     }
@@ -132,9 +133,10 @@ export default {
       options.splice(idx, 1)
     },
     addOption(e) {
-      const options = this.store.options
-      const option  = $('#option').val()
-      options.push(option)
+      const app     = this
+      const options = app.store.options
+      options.push(app.option)
+      app.option = ''
     },
     deleteProblem(e) {
       const problems = this.store.problems

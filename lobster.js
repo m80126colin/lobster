@@ -33,10 +33,7 @@ const route_problem = (req, res) => {
   // read problem config
   const raw = readRaw()
   // collection of options
-  const options = _(raw.options)
-    .sortBy(ans => ans)
-    .sortedUniq()
-    .value()
+  const options = raw.options
   // make index of options
   const optidx = _.reduce(options, (dict, val, key) => {
     dict[val] = key
