@@ -13,8 +13,8 @@
   </div>
   <div class="ui segment" v-else-if="page === 1">
     <h1 class="ui header">作答</h1>
-    <div class="ui four column grid basic segment">
-      <div class="column" v-for="s in prob.selections">
+    <div class="ui five column grid basic segment">
+      <div class="column compress" v-for="s in prob.selections">
         <div class="ui large radio checkbox">
           <input type="radio"
             :name="idx"
@@ -192,3 +192,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.compress {
+  padding-top: 0rem !important;
+}
+</style>
