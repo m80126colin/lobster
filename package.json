@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js & node setup.js",
+    "update": "node build/build.js",
     "start": "node lobster.js"
   },
   "dependencies": {
