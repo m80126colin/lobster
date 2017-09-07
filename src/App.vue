@@ -56,6 +56,7 @@ export default {
     writeCheck(idx, data) {
       const app = this
       _.assign(app.store.check[idx], data)
+      console.log(app.store.check)
     },
     /**
      *  Upload store.token and store.check to retrieve store.result
@@ -66,6 +67,7 @@ export default {
         _.pick(app.store, 'token', 'check'))
       .done(data => {
         _.assign(app.store, { result: data })
+        console.log(app.store.result)
       })
     },
     /**
