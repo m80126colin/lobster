@@ -15,6 +15,14 @@ import $ from 'jquery'
  */
 window.jQuery = window.$ = $
 
+const postJSON = (url, data) => $.ajax({
+  type:        'POST',
+  url:         url,
+  data:        JSON.stringify(data),
+  contentType: 'application/json',
+  dataType:    'json'
+})
+
 /**
  *  semantic UI theme
  */
@@ -56,19 +64,26 @@ export default {
     writeCheck(idx, data) {
       const app = this
       _.assign(app.store.check[idx], data)
-      console.log(app.store.check)
+      console.log('check:', app.store.check)
     },
     /**
      *  Upload store.token and store.check to retrieve store.result
      */
     uploadAnswer() {
       const app = this
+      postJSON('/answer', _.pick(app.store, 'token', 'check'))
+      .done(data => {
+        _.assign(app.store, { result: data })
+        console.log('result:', app.store.result)
+      })
+      /*
       $.getJSON('/answer',
         _.pick(app.store, 'token', 'check'))
       .done(data => {
         _.assign(app.store, { result: data })
-        console.log(app.store.result)
+        console.log('result:', app.store.result)
       })
+      */
     },
     /**
      *  Initialize problem data

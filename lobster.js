@@ -93,6 +93,32 @@ const route_answer = (req, res) => {
 }
 
 /**
+ *  route_post_answer
+ *  @route {POST} /answer
+ */
+const route_post_answer = (req, res) => {
+  if (req.body.token && req.body.check) {
+    const data   = jwt.verify(req.body.token, secret)
+    const result = _.zipWith(req.body.check, data.answer,
+      (check, ans) => {
+        return _.assign(
+          {},
+          check,
+          {
+            ok:     ans === parseInt(check.select),
+            answer: data.options[ ans ],
+            select: data.options[ check.select ]
+          }
+        )
+      })
+    res.json(result).end()
+  }
+  else {
+    res.status(400).end()
+  }
+}
+
+/**
  *  route_get_list
  *  @route {GET} /list
  */
@@ -178,6 +204,7 @@ app
 .post('/list',   route_post_list)
 .post('/table',  route_post_table)
 .post('/upload', route_post_upload)
+.post('/answer', route_post_answer)
 // listen
 .listen(port, () => {
   opn(`http://localhost:${port}`)
